@@ -1,0 +1,42 @@
+Too much milk problem:
+In a family jack and jill drink milk every morning.Both used to check the fridge when they arrive home. If milk run out, 
+he or she will leave home to buy milk.The fridge is small in their home that only one bottle of milk can be put in the fridge at a time. 
+As Both Jack and Jill always arrive home at different time ,both might buy a bottle of milk which results in excessive milk. 
+So our goal is to ensure that never more than one person buys milk.
+
+Here we will try out two solutions to resolve this problem.
+
+In the first solution,
+We consider jack and jill as two process and fridge as file which is empty at the begining.
+The basic idea in this solution is When process jack or jill buys a bottle of milk, it writes the string "milk" into the file "fridge".
+Which is a kind of note.
+
+This solution wont be right all the time,because depending upon the order in which fridge accessed the output might change.
+i.e race condition may occur.
+
+Too Much Milk : Use Semaphore
+
+To solve the too much milk problem, jill and jack decide to lock the fridge. 
+There is only one key to open the lock, the one who gets the key can check the fridge. 
+For example, if jill gets the key and checks fridge, jack can not open the fridge until jill releases the key. 
+Jill will not release the key until she ensures that there is milk in fridge. 
+In this program , we use semaphore to implement the key.
+
+Function	Description
+sem_open	Opens/creates a named semaphore for use by a process
+sem_wait	lock a semaphore
+sem_post	unlock a semaphore
+sem_close	Deallocates the specified named semaphore
+sem_unlink	Removes a specified named semaphore
+
+Therefore ,Only one key ensures Jill and Jack will not operate on the fridge at the same time (mutual exclusion). 
+That means while Jill handles with fridge (in critical region), Jack should wait until Jill finishes (leaves the critical region). 
+
+To run the files:
+g++ pb1.cpp -o pb1
+g++ pb2.cpp -o pb2
+./pb1 & ./pb2 &
+
+g++ pd1.cpp -pthread -o pd1
+g++ pd2.cpp -pthread -o pd2
+./pd1 & ./pd2 &
